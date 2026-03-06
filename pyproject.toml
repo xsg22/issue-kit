@@ -1,0 +1,46 @@
+[project]
+name = "issuekit"
+version = "0.1.0"
+description = "AI 辅助开发的 Issue 全生命周期工具。从需求分析到代码审核，由你的 AI 编程助手驱动。"
+requires-python = ">=3.10"
+license = "MIT"
+readme = "README.md"
+keywords = ["ai", "issue", "development", "cursor", "claude", "codex"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "typer>=0.9",
+    "click>=8.1",
+    "rich>=13.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+issuekit = "issuekit.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/xsg22/issue-kit"
+Repository = "https://github.com/xsg22/issue-kit"
+Issues = "https://github.com/xsg22/issue-kit/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/issuekit"]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-v", "--tb=short"]

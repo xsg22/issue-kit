@@ -1,0 +1,90 @@
+---
+description: 准备发布文档并创建 Pull Request。分析代码变更，对比技术方案，生成部署指南。
+handoffs:
+  - label: 代码审核
+    agent: issuekit.review
+    prompt: 审核这个 issue 的代码
+---
+
+## 用户输入
+
+```text
+$ARGUMENTS
+```
+
+## 概述
+
+本命令生成发布文档并创建 Pull Request。分析特性分支上的所有代码变更，对比技术方案，生成部署指南。
+
+## 前置条件
+
+- 开发和测试已完成
+- 代码已提交到特性分支
+- issue 目录中存在 `technical-design.md` 和 `test-plan.md`
+
+## 工作流程
+
+### 第 1 步：定位 Issue 并分析变更
+
+1. 读取 `.issuekit/config.yaml` 中的 `issues_dir` 配置项，获取 Issue 文档存放目录（默认为 `issues`）
+2. 定位 issue 目录（从 `$ARGUMENTS` 或当前分支）
+3. 运行 `git diff master...HEAD` 收集所有代码变更
+4. 运行 `git log master..HEAD --oneline` 列出所有提交
+
+### 第 2 步：阅读上下文
+
+1. 阅读 `technical-design.md` 获取设计方案
+2. 阅读 `test-plan.md` 获取测试覆盖和结果
+3. 阅读 `requirement.md` 获取原始需求
+
+### 第 3 步：对比方案与实际实现
+
+将技术方案与实际代码变更对比：
+- 识别已实现的项目
+- 标记偏离设计的地方
+- 记录计划外的变更
+
+### 第 4 步：生成发布文档
+
+加载模板 `.issuekit/templates/release-note.md` 并填充所有章节：
+
+- 变更概述
+- 需求变更汇总
+- 详细变更清单（功能、接口、数据库、配置）
+- 影响范围
+- 部署步骤（有序检查清单）
+- 回滚方案
+- 监控与告警
+- 发布后验证
+
+### 第 5 步：创建 Pull Request
+
+```bash
+git push -u origin HEAD
+gh pr create --title "{Issue ID}: {摘要}" --body "$(cat <<'EOF'
+## 概述
+{发布文档中的关键变更}
+
+## 变更清单
+{变更列表}
+
+## 测试情况
+{测试覆盖摘要}
+
+## 部署说明
+{部署步骤（如有）}
+
+## 相关文档
+- 需求文档：{issues_dir}/{issue-id}/requirement.md
+- 技术方案：{issues_dir}/{issue-id}/technical-design.md
+- 测试方案：{issues_dir}/{issue-id}/test-plan.md
+- 发布文档：{issues_dir}/{issue-id}/release-note.md
+
+EOF
+)"
+```
+
+### 第 6 步：写入文件并报告
+
+1. 将 `release-note.md` 写入 issue 目录
+2. 报告 PR 链接并建议下一步：`/issuekit.review`
