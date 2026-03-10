@@ -10,7 +10,6 @@ from rich.tree import Tree
 
 from issuekit.agents import AGENT_REGISTRY, get_agent_config
 from issuekit.templates import copy_templates
-from issuekit.knowledge import copy_knowledge_commands
 
 console = Console()
 
@@ -23,9 +22,16 @@ SUPPORTED_AI = ", ".join(AGENT_REGISTRY.keys())
 USAGE_EXAMPLES = (
     "\n[dim]用法示例:[/dim]\n"
     "  issuekit init --ai cursor\n"
+    "  issuekit init --ai codex\n"
     "  issuekit init --ai claude\n"
     "  issuekit init --ai cursor --force"
 )
+
+SKILL_NAMES = [
+    "issuekit-require", "issuekit-design", "issuekit-coding",
+    "issuekit-test", "issuekit-release", "issuekit-review",
+    "issuekit-change", "issuekit-knowledge",
+]
 
 
 def init(
@@ -107,16 +113,16 @@ def init(
     write_knowledge_config(knowledge_path)
     console.print(f"  {OK} 知识库配置已创建：{ISSUEKIT_DIR}/knowledge/")
 
-    # 第 3 步：安装 AI 助手命令
-    console.print(f"\n[cyan]安装 {agent_config.name} 命令...[/cyan]")
-    commands_dir = project_path / agent_config.commands_dir
-    commands_dir.mkdir(parents=True, exist_ok=True)
+    # 第 3 步：安装 Skills
+    skills_dir = project_path / agent_config.skills_dir
+    skills_dir.mkdir(parents=True, exist_ok=True)
 
-    command_count = copy_knowledge_commands(commands_dir, agent_config)
-    from issuekit.agent_commands import install_agent_commands
-    cmd_count = install_agent_commands(commands_dir, agent_config)
-    command_count += cmd_count
-    console.print(f"  {OK} 已安装 {command_count} 个命令到 {agent_config.commands_dir}/")
+    console.print(f"\n[cyan]安装 {agent_config.name} Skills...[/cyan]")
+    from issuekit.agent_skills import install_agent_skills
+    install_count = install_agent_skills(
+        skills_dir, include_openai_yaml=agent_config.has_openai_yaml,
+    )
+    console.print(f"  {OK} 已安装 {install_count} 个 Skill 到 {agent_config.skills_dir}/")
 
     # 第 4 步：展示结果
     console.print()
@@ -133,21 +139,21 @@ def init(
     kn_tree = issuekit_tree.add("[cyan]knowledge/[/cyan]")
     kn_tree.add("config.yaml")
 
-    cmd_tree = tree.add(f"[cyan]{agent_config.commands_dir}/[/cyan]")
-    for name in [
-        "issuekit.require", "issuekit.design", "issuekit.coding",
-        "issuekit.test", "issuekit.release", "issuekit.review",
-        "issuekit.change", "issuekit.knowledge",
-    ]:
-        cmd_tree.add(f"{name}{agent_config.command_ext}")
+    skills_tree = tree.add(f"[cyan]{agent_config.skills_dir}/[/cyan]")
+    for name in SKILL_NAMES:
+        skill_subtree = skills_tree.add(f"[cyan]{name}/[/cyan]")
+        skill_subtree.add("SKILL.md")
+        if agent_config.has_openai_yaml:
+            agents_subtree = skill_subtree.add("[cyan]agents/[/cyan]")
+            agents_subtree.add("openai.yaml")
 
     console.print(tree)
 
     console.print(
         f"\n[green]IssueKit 初始化完成！[/green]\n\n"
         f"下一步：\n"
-        f"  1. [cyan]/issuekit.knowledge[/cyan]  构建项目知识摘要（推荐）\n"
-        f"  2. [cyan]/issuekit.require[/cyan]    创建第一个 Issue\n"
+        f"  1. [cyan]$issuekit-knowledge[/cyan]  构建项目知识摘要（推荐）\n"
+        f"  2. [cyan]$issuekit-require[/cyan]    创建第一个 Issue\n"
     )
 
 

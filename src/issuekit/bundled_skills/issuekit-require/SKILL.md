@@ -1,22 +1,15 @@
 ---
-description: 创建新 Issue 并进行需求分析。结合代码分析需求完整度，生成面向产品经理的需求文档。
-handoffs:
-  - label: 设计技术方案
-    agent: issuekit.design
-    prompt: 为这个 issue 设计技术方案
+name: issuekit-require
+description: 创建新 Issue 并进行需求分析。结合代码分析需求完整度，生成面向产品经理的需求文档。当用户提到新建 issue、分析需求、创建需求文档时使用。
 ---
 
 ## 用户输入
 
-```text
-$ARGUMENTS
-```
-
-在 `/issuekit.require` 后面输入的文本就是产品需求描述（可包含文字和图片）。如果为空则提示用户提供需求内容。
+用户在调用本 skill 时提供的文本就是产品需求描述（可包含文字和图片）。如果为空则提示用户提供需求内容。
 
 ## 概述
 
-本命令创建一个新的 issue，结合代码库分析需求完整度，生成需求文档。
+本 skill 创建一个新的 issue，结合代码库分析需求完整度，生成需求文档。
 
 **核心原则**：需求文档是面向产品经理和业务方的，不涉及源码、技术实现、代码位置。Agent 内部需要深入阅读代码来理解业务，但文档输出只呈现业务层面的分析结果。
 
@@ -24,7 +17,7 @@ $ARGUMENTS
 
 ### 第 1 步：解析需求输入
 
-1. 从 `$ARGUMENTS` 提取需求描述
+1. 从用户输入提取需求描述
    - 如果为空：报错 "请提供需求描述（文本/图片）"
 2. 提取关键概念：参与者、操作、数据、约束条件、业务规则
 3. 判断 issue 类型：Feature / Bug / Optimization / Hotfix
@@ -38,7 +31,7 @@ $ARGUMENTS
 
 ### 第 3 步：确保项目上下文
 
-检查 `.issuekit/knowledge/` 是否有项目知识摘要。如果缺失或不完整，先运行 `/issuekit.knowledge` 构建完整的项目理解。
+检查 `.issuekit/knowledge/` 是否有项目知识摘要。如果缺失或不完整，先运行 `$issuekit-knowledge` 构建完整的项目理解。
 
 ### 第 4 步：深入代码分析（内部分析，不输出到文档）
 
@@ -105,7 +98,7 @@ git checkout -b feature/{issue-id}   # Bug 类型使用 bugfix/{issue-id}
 - Git 分支名称
 - AI 需求评审结果摘要
 - 如果有待确认问题（第 5 章），展示问题并等待产品经理回复
-- 建议下一步：需求确认后运行 `/issuekit.design`
+- 建议下一步：需求确认后运行 `$issuekit-design`
 
 ## AI 生成指南
 

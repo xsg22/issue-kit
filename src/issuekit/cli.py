@@ -21,6 +21,7 @@ SUPPORTED_AI = ", ".join(AGENT_REGISTRY.keys())
 INIT_USAGE = (
     "\n用法示例:\n"
     "  issuekit init --ai cursor\n"
+    "  issuekit init --ai codex\n"
     "  issuekit init --ai claude\n"
     "  issuekit init --ai cursor --force\n"
 )
@@ -67,10 +68,11 @@ def init(
 ):
     """在项目中初始化 IssueKit。
 
-    安装文档模板、AI 助手命令和知识库配置。
+    安装文档模板、AI 助手 Skills 和知识库配置。
 
     用法示例:
         issuekit init --ai cursor
+        issuekit init --ai codex
         issuekit init --ai cursor --issues-dir doc/issues
         issuekit init --ai cursor --force
     """

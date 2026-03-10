@@ -1,0 +1,4 @@
+interface:
+  display_name: "IssueKit 技术方案"
+  short_description: "为 Issue 设计完整技术方案，涵盖架构、接口、组件和开发步骤。"
+  default_prompt: "使用 $issuekit-design 为当前 Issue 生成技术方案文档。"

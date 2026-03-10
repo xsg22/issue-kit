@@ -1,35 +1,28 @@
 ---
-description: 为 Issue 设计技术方案。技术调研、架构设计、接口设计、组件设计、开发步骤，一份文档涵盖完整技术方案。
-handoffs:
-  - label: 开始编码
-    agent: issuekit.coding
-    prompt: 按技术方案开始编码实现
+name: issuekit-design
+description: 为 Issue 设计技术方案。技术调研、架构设计、接口设计、组件设计、开发步骤，一份文档涵盖完整技术方案。当用户提到技术方案、方案设计时使用。
 ---
 
 ## 用户输入
-
-```text
-$ARGUMENTS
-```
 
 用户可以指定 issue ID，也可以从当前 git 分支自动推断。
 
 ## 概述
 
-本命令为 issue 生成一份完整的技术方案文档（`technical-design.md`），涵盖从技术调研到开发指南的全流程。
+本 skill 为 issue 生成一份完整的技术方案文档（`technical-design.md`），涵盖从技术调研到开发指南的全流程。
 
 ## 前置条件
 
 - issue 目录中必须存在 `requirement.md`
 - 需求状态应为"已确认"（待确认问题已解决）
 
-如果前置条件不满足，提示用户先运行 `/issuekit.require` 或解决待确认问题。
+如果前置条件不满足，提示用户先运行 `$issuekit-require` 或解决待确认问题。
 
 ## 工作流程
 
 ### 第 1 步：定位 Issue
 
-1. 如果 `$ARGUMENTS` 中包含 issue ID，直接使用
+1. 如果用户输入中包含 issue ID，直接使用
 2. 否则从当前 git 分支名提取（例如 `feature/FEAT-20260305-xxx` → `FEAT-20260305-xxx`）
 3. 读取 `.issuekit/config.yaml` 中的 `issues_dir` 配置项，获取 Issue 文档存放目录（默认为 `issues`）
 4. 验证 `{issues_dir}/{issue-id}/requirement.md` 存在
@@ -113,4 +106,4 @@ $ARGUMENTS
 ### 第 8 步：写入文件并报告
 
 1. 将 `technical-design.md` 写入 issue 目录
-2. 报告完成并建议下一步：`/issuekit.coding`
+2. 报告完成并建议下一步：`$issuekit-coding`

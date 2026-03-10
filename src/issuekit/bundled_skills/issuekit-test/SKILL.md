@@ -1,20 +1,15 @@
 ---
-description: 为 Issue 制定全面的测试方案。基于需求和技术方案，生成黑盒业务测试和白盒单测/接口测试用例。
-handoffs:
-  - label: 准备发布
-    agent: issuekit.release
-    prompt: 为这个 issue 准备发布
+name: issuekit-test
+description: 为 Issue 制定全面的测试方案。基于需求和技术方案，生成黑盒业务测试和白盒单测/接口测试用例。当用户提到测试方案、测试用例时使用。
 ---
 
 ## 用户输入
 
-```text
-$ARGUMENTS
-```
+用户可以指定 issue ID，也可以从当前 git 分支自动推断。
 
 ## 概述
 
-本命令生成测试方案文档。包含两个互补模块：先输出业务功能测试（黑盒），再输出单测接口测试（白盒）。
+本 skill 生成测试方案文档。包含两个互补模块：先输出业务功能测试（黑盒），再输出单测接口测试（白盒）。
 
 ## 前置条件
 
@@ -25,7 +20,7 @@ $ARGUMENTS
 ### 第 1 步：定位 Issue 并阅读上下文
 
 1. 读取 `.issuekit/config.yaml` 中的 `issues_dir` 配置项，获取 Issue 文档存放目录（默认为 `issues`）
-2. 定位 issue 目录（从 `$ARGUMENTS` 或当前分支，issue 目录位于 `{issues_dir}/{issue-id}/`）
+2. 定位 issue 目录（从用户输入或当前分支，issue 目录位于 `{issues_dir}/{issue-id}/`）
 3. 阅读 `requirement.md` 获取验收标准、用户场景、业务规则
 4. 阅读 `technical-design.md` 获取方案设计、核心流程、关键代码位置
 5. 阅读技术方案中标识的核心方法的实际源码
@@ -72,4 +67,4 @@ $ARGUMENTS
 
 1. 加载模板 `.issuekit/templates/test-plan.md`
 2. 将 `test-plan.md` 写入 issue 目录
-3. 报告完成并建议下一步：开始开发，然后运行 `/issuekit.release`
+3. 报告完成并建议下一步：开始开发，然后运行 `$issuekit-release`

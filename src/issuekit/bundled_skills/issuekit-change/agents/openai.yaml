@@ -1,0 +1,4 @@
+interface:
+  display_name: "IssueKit 变更管理"
+  short_description: "记录需求或方案变更，追踪影响并同步更新所有受影响文档。"
+  default_prompt: "使用 $issuekit-change 记录变更内容并更新受影响的文档。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "IssueKit 编码实现"
+  short_description: "按技术方案编码实现，完成后交叉校验代码与文档一致性。"
+  default_prompt: "使用 $issuekit-coding 按技术方案进行编码并校验实现。"

@@ -1,6 +1,6 @@
 """AI 助手配置注册表。
 
-每个助手定义了命令文件的存放位置和格式要求。
+每个助手定义了 Skills 的安装位置。
 """
 
 from dataclasses import dataclass
@@ -11,48 +11,32 @@ from typing import Optional
 class AgentConfig:
     """AI 助手配置项。"""
     name: str
-    commands_dir: str
-    rules_dir: Optional[str]
-    command_ext: str
-    command_frontmatter: bool
-    supports_handoffs: bool
+    skills_dir: str
+    """Skills 安装目录（每个 skill 一个子目录，含 SKILL.md）。"""
+    has_openai_yaml: bool = False
+    """是否安装 agents/openai.yaml 元数据（仅 Codex 需要）。"""
 
     def format_description(self) -> str:
-        return f"{self.name} ({self.commands_dir})"
+        return f"{self.name} ({self.skills_dir})"
 
 
 AGENT_REGISTRY: dict[str, AgentConfig] = {
     "cursor": AgentConfig(
         name="Cursor",
-        commands_dir=".cursor/commands",
-        rules_dir=".cursor/rules",
-        command_ext=".md",
-        command_frontmatter=True,
-        supports_handoffs=True,
+        skills_dir=".cursor/skills",
     ),
     "claude": AgentConfig(
         name="Claude Code",
-        commands_dir=".claude/commands",
-        rules_dir=None,
-        command_ext=".md",
-        command_frontmatter=False,
-        supports_handoffs=False,
+        skills_dir=".claude/skills",
     ),
     "codex": AgentConfig(
         name="Codex",
-        commands_dir=".codex/commands",
-        rules_dir=None,
-        command_ext=".md",
-        command_frontmatter=False,
-        supports_handoffs=False,
+        skills_dir=".agents/skills",
+        has_openai_yaml=True,
     ),
     "copilot": AgentConfig(
         name="GitHub Copilot",
-        commands_dir=".github/agents",
-        rules_dir=None,
-        command_ext=".md",
-        command_frontmatter=False,
-        supports_handoffs=False,
+        skills_dir=".github/skills",
     ),
 }
 

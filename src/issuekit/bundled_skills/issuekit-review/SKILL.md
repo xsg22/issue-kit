@@ -1,16 +1,15 @@
 ---
-description: 多维度代码审核。交叉验证代码变更与需求、技术方案、测试方案的一致性，生成审核报告。
+name: issuekit-review
+description: 多维度代码审核。交叉验证代码变更与需求、技术方案、测试方案的一致性，生成审核报告。当用户提到代码审核、review 时使用。
 ---
 
 ## 用户输入
 
-```text
-$ARGUMENTS
-```
+用户可以指定 issue ID，也可以从当前 git 分支自动推断。
 
 ## 概述
 
-本命令通过交叉验证代码变更与需求、技术方案、测试方案和编码规范，进行全面的代码审核，生成详细的审核文档。
+本 skill 通过交叉验证代码变更与需求、技术方案、测试方案和编码规范，进行全面的代码审核，生成详细的审核文档。
 
 ## 前置条件
 
@@ -22,7 +21,7 @@ $ARGUMENTS
 ### 第 1 步：定位 Issue 并收集材料
 
 1. 读取 `.issuekit/config.yaml` 中的 `issues_dir` 配置项，获取 Issue 文档存放目录（默认为 `issues`）
-2. 定位 issue 目录（从 `$ARGUMENTS` 或当前分支，issue 目录位于 `{issues_dir}/{issue-id}/`）
+2. 定位 issue 目录（从用户输入或当前分支，issue 目录位于 `{issues_dir}/{issue-id}/`）
 3. 阅读所有 issue 文档：`requirement.md`、`technical-design.md`、`test-plan.md`、`release-note.md`
 4. 获取代码差异：`git diff master...HEAD`
 5. 获取 PR 信息（如有）：`gh pr view`

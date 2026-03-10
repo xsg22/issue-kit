@@ -1,20 +1,15 @@
 ---
-description: 准备发布文档并创建 Pull Request。分析代码变更，对比技术方案，生成部署指南。
-handoffs:
-  - label: 代码审核
-    agent: issuekit.review
-    prompt: 审核这个 issue 的代码
+name: issuekit-release
+description: 准备发布文档并创建 Pull Request。分析代码变更，对比技术方案，生成部署指南。当用户提到准备发布、创建 PR 时使用。
 ---
 
 ## 用户输入
 
-```text
-$ARGUMENTS
-```
+用户可以指定 issue ID，也可以从当前 git 分支自动推断。
 
 ## 概述
 
-本命令生成发布文档并创建 Pull Request。分析特性分支上的所有代码变更，对比技术方案，生成部署指南。
+本 skill 生成发布文档并创建 Pull Request。分析特性分支上的所有代码变更，对比技术方案，生成部署指南。
 
 ## 前置条件
 
@@ -27,7 +22,7 @@ $ARGUMENTS
 ### 第 1 步：定位 Issue 并分析变更
 
 1. 读取 `.issuekit/config.yaml` 中的 `issues_dir` 配置项，获取 Issue 文档存放目录（默认为 `issues`）
-2. 定位 issue 目录（从 `$ARGUMENTS` 或当前分支）
+2. 定位 issue 目录（从用户输入或当前分支）
 3. 运行 `git diff master...HEAD` 收集所有代码变更
 4. 运行 `git log master..HEAD --oneline` 列出所有提交
 
@@ -87,4 +82,4 @@ EOF
 ### 第 6 步：写入文件并报告
 
 1. 将 `release-note.md` 写入 issue 目录
-2. 报告 PR 链接并建议下一步：`/issuekit.review`
+2. 报告 PR 链接并建议下一步：`$issuekit-review`

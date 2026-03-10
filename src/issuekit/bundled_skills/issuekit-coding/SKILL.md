@@ -1,22 +1,15 @@
 ---
-description: 按技术方案进行编码实现。逐步执行开发步骤，完成后交叉校验代码与技术文档、需求文档的一致性，修复偏差。
-handoffs:
-  - label: 制定测试方案
-    agent: issuekit.test
-    prompt: 为这个 issue 制定测试方案
+name: issuekit-coding
+description: 按技术方案进行编码实现。逐步执行开发步骤，完成后交叉校验代码与技术文档、需求文档的一致性，修复偏差。当用户提到开始编码、按方案实现时使用。
 ---
 
 ## 用户输入
-
-```text
-$ARGUMENTS
-```
 
 用户可以指定 issue ID，也可以从当前 git 分支自动推断。
 
 ## 概述
 
-本命令按照技术方案文档进行编码实现，完成后通过交叉校验确保实现与技术文档、需求文档完全一致。
+本 skill 按照技术方案文档进行编码实现，完成后通过交叉校验确保实现与技术文档、需求文档完全一致。
 
 ## 前置条件
 
@@ -30,7 +23,7 @@ $ARGUMENTS
 ### 第 1 步：定位 Issue 并阅读上下文
 
 1. 读取 `.issuekit/config.yaml` 中的 `issues_dir` 配置项，获取 Issue 文档存放目录（默认为 `issues`）
-2. 定位 issue 目录（从 `$ARGUMENTS` 或当前 git 分支，issue 目录位于 `{issues_dir}/{issue-id}/`）
+2. 定位 issue 目录（从用户输入或当前 git 分支，issue 目录位于 `{issues_dir}/{issue-id}/`）
 3. 阅读 `technical-design.md`，重点关注：
    - 技术调研（关注调研的结论）
    - 开发步骤（按顺序执行的实操指南）
@@ -127,5 +120,5 @@ $ARGUMENTS
 ⚠️ 以下设计需要回头更新技术文档：
 - {问题描述}
 
-建议下一步：运行 /issuekit.test 制定测试方案
+建议下一步：运行 $issuekit-test 制定测试方案
 ```

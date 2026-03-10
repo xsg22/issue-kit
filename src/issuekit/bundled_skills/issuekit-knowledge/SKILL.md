@@ -1,10 +1,11 @@
 ---
-description: 分析当前项目，生成结构化的上下文知识摘要到 .issuekit/knowledge/，供其他 issuekit 命令使用。
+name: issuekit-knowledge
+description: 分析当前项目，生成结构化的上下文知识摘要到 .issuekit/knowledge/，供其他 issuekit skill 使用。当用户提到构建知识库、项目知识摘要时使用。
 ---
 
 ## 概述
 
-本命令分析当前项目的代码、配置和结构，生成一系列知识摘要文件。这些摘要让 AI Agent 在执行需求分析、技术方案设计等任务时，能快速理解项目上下文，而无需每次从零扫描。
+本 skill 分析当前项目的代码、配置和结构，生成一系列知识摘要文件。这些摘要让 AI Agent 在执行需求分析、技术方案设计等任务时，能快速理解项目上下文，而无需每次从零扫描。
 
 **输出目录**: `.issuekit/knowledge/`
 
@@ -23,7 +24,8 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
    - `*.csproj` / `*.sln` → C#/.NET
    - 其他构建文件 → 按实际情况处理
 2. 读取依赖配置，提取所有依赖及版本
-3. 读取应用配置文件（如 application.yml, .env, config/ 等）识别中间件和外部服务
+3. 读取应用配置文件（如 application.yml, config/ 等）识别中间件和外部服务
+4. 忽略.env;.cursor;.idea等不可见的配置文件
 
 ### 第 2 步：项目概览
 
@@ -99,7 +101,7 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
 - .issuekit/knowledge/integrations.md
 - .issuekit/knowledge/conventions.md
 
-后续命令（如 /issuekit.require、/issuekit.design）将自动读取这些知识摘要。
+后续 skill（如 $issuekit-require、$issuekit-design）将自动读取这些知识摘要。
 ```
 
 ## AI 执行指南

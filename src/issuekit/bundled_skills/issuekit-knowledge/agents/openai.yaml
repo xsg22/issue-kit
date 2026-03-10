@@ -1,0 +1,4 @@
+interface:
+  display_name: "IssueKit 知识库"
+  short_description: "分析项目代码和结构，生成上下文知识摘要供后续工作流使用。"
+  default_prompt: "使用 $issuekit-knowledge 扫描项目并刷新 .issuekit/knowledge 知识摘要。"
