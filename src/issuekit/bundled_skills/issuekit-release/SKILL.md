@@ -44,7 +44,7 @@ description: 准备发布文档并创建 Pull Request。分析代码变更，对
 加载模板 `.issuekit/templates/release-note.md` 并填充所有章节：
 
 - 变更概述
-- 需求变更汇总
+- 需求变更汇总：合并 `requirement.md`、`technical-design.md` 末尾「变更记录」（排除仅初稿条目），并补充本分支 `git log` 中体现的需求或方案变更，去重后填入
 - 详细变更清单（功能、接口、数据库、配置）
 - 影响范围
 - 部署步骤（有序检查清单）
