@@ -9,13 +9,13 @@ ISSUEKIT-RELEASE · 执行者须知（AI / 填写人必读）
 
 【何时必须主动查 MCP】
 在填写 §3.3、§3.4 的「是否确认」前，若工作区已启用且可用的 MCP 包含：
-  · MySQL（如 user-mysql）只读：表结构 / DDL 与迁移脚本对照
+  · MySQL（如 user-mysql）只读：表结构 / DDL 与文档中的变更说明对照
   · Apollo（如 user-apollo-*）只读：namespace / key / 与文档列出的配置项对照
 且已按项目规范确认 MCP 连接归属与当前 Issue / 项目 / 目标环境一致 → 必须先执行只读核对，
 再据实填写「是 / 否 / 待确认」。禁止未核对就填「是」或臆造结果。如果是自动确认，在结果后面加上“（AI）”
 
 【建议调用的只读能力（名称以工作区 MCP 为准）】
-  · 数据库：对 §3.3 涉及表使用 get_create_table / describe_table 等与迁移 SQL 比对
+  · 数据库：对 §3.3 涉及表使用 get_create_table / describe_table 等与文档中的 DDL/变更说明比对
   · 配置：对 §3.4 列出各 key 使用 apollo_get_key（带 appId、cluster、namespace）
 
 【交付物中禁止出现】
@@ -74,8 +74,7 @@ ISSUEKIT-RELEASE · 执行者须知（AI / 填写人必读）
 | 操作 | 表 | SQL | 说明 | 是否确认 |
 |------|-----|-----|------|---------|
 | ALTER | {表} | ALTER TABLE ... | {说明} | 是 / 否 / 待确认 |
-
-**SQL 脚本位置**: [`sql/{version}/{script}.sql`](sql/{version}/{script}.sql)
+| INSERT/UPDATE | {表} | INSERT INTO TABLE ... | {说明} | 是 / 否 / 待确认 |
 
 ### 3.4 配置变更
 
@@ -91,7 +90,7 @@ ISSUEKIT-RELEASE · 执行者须知（AI / 填写人必读）
 
 ## 5. 部署步骤
 
-1. [ ] 执行数据库迁移: `sql/xxx.sql`
+1. [ ] 执行数据库迁移（依据 §3.3 说明）
 2. [ ] 更新配置: {namespace} - {key}
 3. [ ] 部署服务: {服务名}
 4. [ ] 验证功能: {验证步骤}
@@ -100,7 +99,7 @@ ISSUEKIT-RELEASE · 执行者须知（AI / 填写人必读）
 ## 6. 回滚方案
 
 1. [ ] 回滚服务: {version/commit}
-2. [ ] 回滚数据库: {回滚 SQL}
+2. [ ] 回滚数据库: {回滚说明（见 §3.3）}
 3. [ ] 回滚配置: {说明}
 4. [ ] 验证回滚: {步骤}
 
