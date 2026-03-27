@@ -1,21 +1,43 @@
 ---
 name: issuekit-knowledge
-description: 分析当前项目，生成结构化的上下文知识摘要到 .issuekit/knowledge/，供其他 issuekit skill 使用。当用户提到构建知识库、项目知识摘要时使用。
+description: 分析当前项目，生成结构化的上下文知识摘要到 .issuekit/knowledge/；也支持按功能模块单独梳理并输出到 .issuekit/knowledge/modules/。供其他 issuekit skill 使用。当用户提到构建知识库、项目知识摘要时使用。
 ---
 
 ## 概述
 
 本 skill 分析当前项目的代码、配置和结构，生成一系列知识摘要文件。这些摘要让 AI Agent 在执行需求分析、技术方案设计等任务时，能快速理解项目上下文，而无需每次从零扫描。
 
-**输出目录**: `.issuekit/knowledge/`
+**输出目录**:
+- 全量知识：`.issuekit/knowledge/`
+- 模块知识：`.issuekit/knowledge/modules/`
+
+## 用户输入模式
+
+- 未指定模块时：执行全量知识梳理（默认）
+- 指定模块名称/路径/功能域时：仅梳理该模块及其直接依赖上下文，输出模块知识文件
 
 ## 工作流程
 
-### 第 1 步：检测项目类型
+### 第 0 步：先读取知识约定并规划任务
+
+在开始知识梳理规划前，优先执行：
+
+1. 阅读 `.issuekit/knowledge/conventions.md`（如有）
+2. 阅读 `.issuekit/knowledge/` 下已有知识摘要（如有），若存在 `.issuekit/knowledge/modules/` 相关模块文件则优先阅读
+3. 基于现有约定与已有知识，规划本次是全量更新还是模块增量更新
+
+### 第 1 步：识别梳理范围并检测项目类型
+
+先识别本次任务是"全量知识梳理"还是"模块知识梳理"：
+
+1. 若用户明确指定模块（如"订单模块"、`src/order/`、"支付流程"），进入模块模式
+2. 否则进入全量模式
+3. 在开始分析前，先阅读已存在的 `.issuekit/knowledge/` 内容（如有），避免重复扫描和重复结论
+4. 然后自动识别项目技术栈和构建系统：
 
 自动识别项目的技术栈和构建系统：
 
-1. 扫描项目根目录的构建/配置文件：
+   - 扫描项目根目录的构建/配置文件：
    - `pom.xml` / `build.gradle` → Java/Kotlin
    - `package.json` → JavaScript/TypeScript
    - `go.mod` → Go
@@ -23,9 +45,9 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
    - `Cargo.toml` → Rust
    - `*.csproj` / `*.sln` → C#/.NET
    - 其他构建文件 → 按实际情况处理
-2. 读取依赖配置，提取所有依赖及版本
-3. 读取应用配置文件（如 application.yml, config/ 等）识别中间件和外部服务
-4. 忽略.env;.cursor;.idea等不可见的配置文件
+   - 读取依赖配置，提取所有依赖及版本
+   - 读取应用配置文件（如 application.yml, config/ 等）识别中间件和外部服务
+   - 忽略.env;.cursor;.idea等不可见的配置文件
 
 ### 第 2 步：项目概览
 
@@ -36,6 +58,8 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
 - 技术栈表格（类别 | 技术 | 版本 | 用途）
 - 代码规模统计（按语言/模块的文件数和行数）
 - Git 活跃度（近 6 个月的提交频率、主要贡献者）
+
+如果是模块模式，跳过本步骤。
 
 ### 第 3 步：架构分析
 
@@ -87,6 +111,18 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
 - 日志使用方式
 - 错误处理模式
 - 如果项目已有规范文件（如 .cursor/rules/, .editorconfig, linter 配置），整合其内容
+- 增加"Agent 使用提示"小节：执行任何任务前，先阅读 `.issuekit/knowledge/` 中与任务相关的已有知识；若存在 `.issuekit/knowledge/modules/` 对应模块文件，优先阅读模块文件，再补充全局知识，然后再开始任务规划
+
+### 第 7.5 步：模块知识文件（仅模块模式）
+
+生成 `.issuekit/knowledge/modules/{module-name}.md`：
+
+- 模块边界（职责、入口、对外能力）
+- 核心流程（Mermaid flowchart/sequenceDiagram）
+- 模块 API 与关键数据结构
+- 依赖与被依赖关系（重点列出跨模块调用）
+- 约定与注意事项（从 `conventions.md` 抽取与模块强相关部分）
+- 已知风险和待确认点
 
 ### 第 8 步：报告完成
 
@@ -100,8 +136,10 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
 - .issuekit/knowledge/data-model.md
 - .issuekit/knowledge/integrations.md
 - .issuekit/knowledge/conventions.md
+（模块模式额外生成）
+- .issuekit/knowledge/modules/{module-name}.md
 
-后续 skill（如 $issuekit-require、$issuekit-design）将自动读取这些知识摘要。
+后续 skill（如 $issuekit-require、$issuekit-design）将优先读取这些知识摘要与模块知识（如存在）。
 ```
 
 ## AI 执行指南
@@ -112,6 +150,7 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
 - 如果某个步骤不适用（如项目无数据库），跳过并注明
 - 优先使用 Mermaid 图表，文字作为补充
 - 所有关键入口使用可点击的相对路径链接
+- 任何知识梳理前先复用已有知识文件，优先增量更新，避免重复产出
 
 ### 增量更新
 

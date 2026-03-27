@@ -13,6 +13,14 @@ description: 记录和管理 Issue 的需求或方案变更。追踪变更对所
 
 ## 工作流程
 
+### 第 0 步：先读取知识约定并规划任务
+
+在开始变更分析规划前，优先执行：
+
+1. 阅读 `.issuekit/knowledge/conventions.md`（如有）
+2. 阅读 `.issuekit/knowledge/` 下与本次变更相关的已有知识摘要（如有），若存在 `.issuekit/knowledge/modules/` 对应模块文件则优先阅读
+3. 基于上述约定与已有知识，再开始后续变更步骤
+
 ### 第 1 步：定位 Issue 并解析变更
 
 1. 读取 `.issuekit/config.yaml` 中的 `issues_dir` 配置项，获取 Issue 文档存放目录（默认为 `issues`）
