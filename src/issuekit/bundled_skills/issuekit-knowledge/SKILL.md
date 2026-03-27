@@ -111,7 +111,7 @@ description: 分析当前项目，生成结构化的上下文知识摘要到 .is
 - 日志使用方式
 - 错误处理模式
 - 如果项目已有规范文件（如 .cursor/rules/, .editorconfig, linter 配置），整合其内容
-- 增加"Agent 使用提示"小节：执行任何任务前，先阅读 `.issuekit/knowledge/` 中与任务相关的已有知识；若存在 `.issuekit/knowledge/modules/` 对应模块文件，优先阅读模块文件，再补充全局知识，然后再开始任务规划
+- 执行任务前，先阅读 `.issuekit/knowledge/` 中与任务相关的已有知识；若存在 `.issuekit/knowledge/modules/` 对应模块文件，优先阅读模块文件，再补充全局知识，然后再开始任务规划
 
 ### 第 7.5 步：模块知识文件（仅模块模式）
 

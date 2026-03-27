@@ -14,6 +14,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 import typer
 
 from issuekit.commands.init import init as init_cmd
+from issuekit.commands.upgrade import run_upgrade
 from issuekit.agents import AGENT_REGISTRY
 
 SUPPORTED_AI = ", ".join(AGENT_REGISTRY.keys())
@@ -86,6 +87,24 @@ def init(
         )
         raise typer.Exit(2)
     init_cmd(ai=ai, issues_dir=issues_dir, here=here, force=force)
+
+
+@app.command("upgrade")
+def upgrade(
+    ai: str = typer.Option(
+        ...,
+        "--ai",
+        help=f"与 init 时一致：{SUPPORTED_AI}",
+    ),
+):
+    """将当前已安装 issuekit 包内的文档模板与 Skills 同步到项目。
+
+    会覆盖 .issuekit/templates/ 下同名 .md，并覆盖各 AI Skills 目录下的 issuekit-* 内容；
+    不修改 .issuekit/config.yaml、.issuekit/knowledge/ 下的知识摘要等。
+
+    先执行 pip install -U issuekit，再运行本命令。
+    """
+    run_upgrade(ai=ai)
 
 
 @app.command("version")

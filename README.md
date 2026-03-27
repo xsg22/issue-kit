@@ -103,6 +103,26 @@ $issuekit-review    # 多维度代码审核
 
 每个 Skill 包含 `SKILL.md`（指令）和 `agents/openai.yaml`（元数据）。
 
+## 更新模板与 Skills（已 init 的项目）
+
+文档模板与 Skills 都来自 **已安装的 `issuekit` PyPI 包**。要拿到新版内容，先升级包，再同步到项目：
+
+```bash
+pip install -U issuekit
+issuekit upgrade --ai cursor    # 与 init 时选的助手一致：cursor / claude / codex / copilot
+```
+
+`upgrade` 会：
+
+- **覆盖** `.issuekit/templates/` 下与内置同名的 `.md`（若你改过模板，请先备份或自行合并）；
+- **覆盖** 各 AI Skills 目录下的 `issuekit-*`（如 `.cursor/skills/`）。
+
+**不会** 修改 `.issuekit/config.yaml`、`.issuekit/knowledge/config.yaml`，也不会删除 `.issuekit/knowledge/` 里已生成的知识摘要文件。
+
+若你曾用 `issuekit init --issues-dir` 自定义过 Issue 目录，无需再改；`upgrade` 不涉及该配置。
+
+> **不建议** 用 `issuekit init --force` 仅为了更新：`--force` 会**整目录删除** `.issuekit/` 并重建，可能丢失知识库配置与 `.issuekit/knowledge/` 下已生成的摘要。
+
 ## 支持的 AI 助手
 
 

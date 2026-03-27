@@ -1,6 +1,6 @@
 [project]
 name = "issuekit"
-version = "0.1.4"
+version = "0.1.5"
 description = "AI 辅助开发的 Issue 全生命周期工具。从需求分析到代码审核，由你的 AI 编程助手驱动。"
 requires-python = ">=3.10"
 license = "MIT"
