@@ -2,7 +2,7 @@
 
 每个 skill 是一个独立目录，包含 SKILL.md。
 Codex 额外需要 agents/openai.yaml 元数据文件。
-源模板在 bundled_skills/ 下，按 skill-name/{SKILL.md, agents/openai.yaml} 组织。
+源模板在 bundled_skills/ 下，包含入口、元数据及可选的引用文档和脚本。
 """
 
 from importlib import resources
@@ -13,11 +13,24 @@ SKILL_DIRS = [
     "issuekit-design",
     "issuekit-coding",
     "issuekit-test",
+    "issuekit-business-test",
     "issuekit-release",
     "issuekit-review",
+    "issuekit-merge",
     "issuekit-change",
     "issuekit-knowledge",
 ]
+
+
+def _copy_skill_resources(source, destination: Path) -> None:
+    """递归复制包内 Skill 资源，兼容 importlib 的资源接口。"""
+    destination.mkdir(parents=True, exist_ok=True)
+    for item in source.iterdir():
+        target = destination / item.name
+        if item.is_dir():
+            _copy_skill_resources(item, target)
+        else:
+            target.write_bytes(item.read_bytes())
 
 
 def install_agent_skills(skills_dir: Path, *, include_openai_yaml: bool = False) -> int:
@@ -41,6 +54,11 @@ def install_agent_skills(skills_dir: Path, *, include_openai_yaml: bool = False)
 
         content = skill_md.read_text(encoding="utf-8")
         (dest_dir / "SKILL.md").write_text(content, encoding="utf-8")
+
+        for resource_name in ("references", "scripts", "assets"):
+            resource_dir = source_dir / resource_name
+            if resource_dir.is_dir():
+                _copy_skill_resources(resource_dir, dest_dir / resource_name)
 
         if include_openai_yaml:
             openai_yaml = source_dir / "agents" / "openai.yaml"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "IssueKit 代码合并"
+  short_description: "理解改动背景并保全各分支有效能力，自主合并，以门禁兜底并在必要时请求人工裁决。"
+  default_prompt: "使用 $issuekit-merge 理解改动背景，保全各分支有效能力，在原则与门禁约束下完成代码集成。"

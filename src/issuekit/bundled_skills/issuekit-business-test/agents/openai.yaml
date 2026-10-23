@@ -1,0 +1,3 @@
+interface:
+  display_name: "IssueKit 真实业务测试"
+  short_description: "生成并执行可回溯的业务测试用例"

@@ -75,4 +75,5 @@ description: 为 Issue 制定全面的测试方案。基于需求和技术方案
 
 1. 加载模板 `.issuekit/templates/test-plan.md`
 2. 将 `test-plan.md` 写入 issue 目录
-3. 报告完成并建议下一步：开始开发，然后运行 `$issuekit-release`
+3. 如果用户要求生成真实可执行的业务验收用例、准备测试数据或执行接口/数据库/日志验证，继续使用 `$issuekit-business-test`；不要在本 skill 中自行执行真实业务写操作。
+4. 其他情况报告完成并建议下一步：开始开发，然后运行 `$issuekit-release`

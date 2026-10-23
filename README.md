@@ -15,9 +15,10 @@ IssueKit 为 AI 辅助开发提供结构化的工作流。它提供一组 Skills
 | 4. 测试方案 | `$issuekit-test`    | 黑盒业务测试 + 白盒单测/接口测试用例   |
 | 5. 发布准备 | `$issuekit-release` | 生成发布文档，创建 Pull Request |
 | 6. 代码审核 | `$issuekit-review`  | 多维度交叉验证（需求、方案、质量）      |
+| 7. 代码合并 | `$issuekit-merge` | 理解改动背景，保全各分支有效能力，以门禁保障合并结果 |
 
 
-还有一个 `$issuekit-knowledge` skill，用于生成项目上下文摘要，让 AI 助手快速理解项目。
+另有 `$issuekit-knowledge` 生成项目上下文摘要、`$issuekit-change` 管理需求与方案变更，以及 `$issuekit-business-test` 设计并编排真实业务验收，共 10 个 Skill。
 
 ## 安装
 
@@ -87,6 +88,7 @@ AI 助手按技术文档的开发步骤逐步实现，完成后自动交叉校�
 $issuekit-test      # 生成测试方案
 $issuekit-release   # 生成发布文档 + 创建 PR
 $issuekit-review    # 多维度代码审核
+$issuekit-merge     # 保全各分支有效能力，完成代码集成
 ```
 
 ## `init` 做了什么
@@ -101,7 +103,7 @@ $issuekit-review    # 多维度代码审核
   - Codex → `.agents/skills/`
   - GitHub Copilot → `.github/skills/`
 
-每个 Skill 包含 `SKILL.md`（指令）和 `agents/openai.yaml`（元数据）。
+每个 Skill 包含 `SKILL.md`（指令），并按需携带 `references/`、`scripts/` 和 `assets/`；Codex 还会安装 `agents/openai.yaml` 元数据。
 
 ## 更新模板与 Skills（已 init 的项目）
 

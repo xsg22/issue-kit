@@ -9,6 +9,7 @@ from rich.panel import Panel
 from rich.tree import Tree
 
 from issuekit.agents import AGENT_REGISTRY, get_agent_config
+from issuekit.agent_skills import SKILL_DIRS, install_agent_skills
 from issuekit.templates import copy_templates
 
 console = Console()
@@ -26,13 +27,6 @@ USAGE_EXAMPLES = (
     "  issuekit init --ai claude\n"
     "  issuekit init --ai cursor --force"
 )
-
-SKILL_NAMES = [
-    "issuekit-require", "issuekit-design", "issuekit-coding",
-    "issuekit-test", "issuekit-release", "issuekit-review",
-    "issuekit-change", "issuekit-knowledge",
-]
-
 
 def init(
     ai: str = typer.Option(
@@ -118,7 +112,6 @@ def init(
     skills_dir.mkdir(parents=True, exist_ok=True)
 
     console.print(f"\n[cyan]安装 {agent_config.name} Skills...[/cyan]")
-    from issuekit.agent_skills import install_agent_skills
     install_count = install_agent_skills(
         skills_dir, include_openai_yaml=agent_config.has_openai_yaml,
     )
@@ -140,7 +133,7 @@ def init(
     kn_tree.add("config.yaml")
 
     skills_tree = tree.add(f"[cyan]{agent_config.skills_dir}/[/cyan]")
-    for name in SKILL_NAMES:
+    for name in SKILL_DIRS:
         skill_subtree = skills_tree.add(f"[cyan]{name}/[/cyan]")
         skill_subtree.add("SKILL.md")
         if agent_config.has_openai_yaml:
