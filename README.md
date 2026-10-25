@@ -18,7 +18,9 @@ IssueKit 为 AI 辅助开发提供结构化的工作流。它提供一组 Skills
 | 7. 代码合并 | `$issuekit-merge` | 理解改动背景，保全各分支有效能力，以门禁保障合并结果 |
 
 
-另有 `$issuekit-knowledge` 生成项目上下文摘要、`$issuekit-change` 管理需求与方案变更，以及 `$issuekit-business-test` 设计并编排真实业务验收，共 10 个 Skill。
+另有 `$issuekit-knowledge` 生成项目上下文摘要、`$issuekit-change` 管理需求与方案变更、`$issuekit-business-test` 设计并编排真实业务验收，以及 `$issuekit-cleanup` 清理 Git 分支与 worktree，共 11 个 Skill。
+
+`$issuekit-cleanup` 先确认主分支与任务目标，清理前展示候选清单和理由，清理后在 `.issuekit/cleanup/` 保存可查询记录；默认仅处理本地，明确要求后才删除远端。
 
 ## 安装
 

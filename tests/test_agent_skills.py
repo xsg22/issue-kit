@@ -23,7 +23,7 @@ class InstallAgentSkillsTest(unittest.TestCase):
 
                 count = install_agent_skills(destination, include_openai_yaml=include_metadata)
 
-                self.assertEqual(count, 10)
+                self.assertEqual(count, 11)
                 self.assertEqual(note.read_text(encoding="utf-8"), "保留项目自有文件")
                 for name in SKILL_DIRS:
                     source = bundled / name

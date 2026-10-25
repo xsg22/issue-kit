@@ -17,6 +17,7 @@ SKILL_DIRS = [
     "issuekit-release",
     "issuekit-review",
     "issuekit-merge",
+    "issuekit-cleanup",
     "issuekit-change",
     "issuekit-knowledge",
 ]
