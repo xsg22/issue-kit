@@ -1,0 +1,4 @@
+interface:
+  display_name: "IssueKit 分支与工作区清理"
+  short_description: "先确认主分支与目标基线，列出理由后清理本地分支和工作区，保存可查询记录。"
+  default_prompt: "使用 $issuekit-cleanup 确认主分支和任务目标，先展示待清理清单及理由，再按授权清理并保存结果，默认仅本地。"

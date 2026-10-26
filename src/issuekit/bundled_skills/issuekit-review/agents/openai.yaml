@@ -1,4 +1,4 @@
 interface:
   display_name: "IssueKit 代码审核"
-  short_description: "多维度代码审核，交叉验证代码与需求、方案、质量标准的一致性。"
-  default_prompt: "使用 $issuekit-review 对当前 Issue 进行全面代码审核。"
+  short_description: "审核指定变更及上下文，输出有证据且可行动的问题。"
+  default_prompt: "使用 $issuekit-review 审核当前指定范围的代码变更，默认只读。"

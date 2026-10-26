@@ -40,7 +40,7 @@ class ChineseErrorGroup(typer.core.TyperGroup):
 
 app = typer.Typer(
     name="issuekit",
-    help="AI 辅助开发的 Issue 全生命周期工具。",
+    help="面向开发者的工程工具包。",
     no_args_is_help=True,
 )
 
@@ -99,7 +99,8 @@ def upgrade(
 ):
     """将当前已安装 issuekit 包内的文档模板与 Skills 同步到项目。
 
-    会覆盖 .issuekit/templates/ 下同名 .md，并覆盖各 AI Skills 目录下的 issuekit-* 内容；
+    Skills 按安装基线更新，遇到本地修改冲突时保留并停止；
+    .issuekit/templates/ 下同名 .md 仍会覆盖，升级前请备份自定义模板；
     不修改 .issuekit/config.yaml、.issuekit/knowledge/ 下的知识摘要等。
 
     先执行 pip install -U issuekit，再运行本命令。

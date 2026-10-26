@@ -1,4 +1,4 @@
 interface:
   display_name: "IssueKit 测试方案"
-  short_description: "生成全面的测试方案，包含黑盒业务测试和白盒单测/接口测试用例。"
-  default_prompt: "使用 $issuekit-test 为当前 Issue 制定测试方案。"
+  short_description: "生成风险驱动的测试策略、覆盖关系与关键预期。"
+  default_prompt: "使用 $issuekit-test 为当前任务制定验证策略。"

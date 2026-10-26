@@ -15,4 +15,4 @@ rules:
     expect: reject_without_side_effect
 ```
 
-项目的真实业务规则、字段、状态和接口应放在项目自己的 `.issuekit/testing/business-domains/` 目录，由项目知识和需求文档提供。
+项目的真实业务规则、字段、状态和接口应放在项目自己的 `.issuekit/testing/business-domains/` 目录，由项目知识和有效需求来源（任务、已确认讨论或文档）提供。

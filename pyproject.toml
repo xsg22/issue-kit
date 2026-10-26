@@ -1,7 +1,7 @@
 [project]
 name = "issuekit"
 version = "0.1.6"
-description = "AI 辅助开发的 Issue 全生命周期工具。从需求分析到代码审核，由你的 AI 编程助手驱动。"
+description = "面向开发者的工程工具包，在关键开发节点提供判断原则、验证门禁与可核验的交付。"
 requires-python = ">=3.10"
 license = "MIT"
 readme = "README.md"

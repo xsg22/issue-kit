@@ -5,7 +5,7 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from issuekit.agent_skills import install_agent_skills
+from issuekit.agent_skills import SkillInstallError, install_agent_skills
 from issuekit.agents import AGENT_REGISTRY, get_agent_config
 from issuekit.templates import copy_templates
 
@@ -33,6 +33,25 @@ def run_upgrade(*, ai: str) -> None:
         )
         raise typer.Exit(1)
 
+    skills_dir = project_path / agent_config.skills_dir
+    skills_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        install_count = install_agent_skills(
+            skills_dir,
+            include_openai_yaml=agent_config.has_openai_yaml,
+            report=lambda message: console.print(message, markup=False),
+        )
+    except (SkillInstallError, OSError) as exc:
+        console.print(f"[red]错误:[/red] {exc}")
+        for detail in getattr(exc, "details", []):
+            console.print(f"  {detail}", markup=False)
+        raise typer.Exit(1) from exc
+    console.print(
+        f"{OK} 已从当前 issuekit 安装包同步 {install_count} 个 Skill 到 "
+        f"[cyan]{agent_config.skills_dir}/[/cyan]"
+    )
+
     templates_path = issuekit_path / "templates"
     templates_path.mkdir(parents=True, exist_ok=True)
     console.print(
@@ -42,16 +61,4 @@ def run_upgrade(*, ai: str) -> None:
     console.print(
         f"{OK} 已从当前 issuekit 安装包同步 {tpl_count} 个模板到 "
         f"[cyan]{ISSUEKIT_DIR}/templates/[/cyan]"
-    )
-
-    skills_dir = project_path / agent_config.skills_dir
-    skills_dir.mkdir(parents=True, exist_ok=True)
-
-    install_count = install_agent_skills(
-        skills_dir,
-        include_openai_yaml=agent_config.has_openai_yaml,
-    )
-    console.print(
-        f"{OK} 已从当前 issuekit 安装包同步 {install_count} 个 Skill 到 "
-        f"[cyan]{agent_config.skills_dir}/[/cyan]"
     )

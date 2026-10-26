@@ -1,4 +1,4 @@
 interface:
   display_name: "IssueKit 发布准备"
-  short_description: "生成发布文档、部署指南并创建 Pull Request。"
-  default_prompt: "使用 $issuekit-release 准备发布文档并创建 PR。"
+  short_description: "核对交付版本、验证与恢复条件，准备发布说明并完成已授权的交付动作。"
+  default_prompt: "使用 $issuekit-release 核对当前版本的交付条件，准备发布说明并按已有授权推进。"

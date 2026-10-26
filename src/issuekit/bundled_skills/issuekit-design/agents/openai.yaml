@@ -1,4 +1,4 @@
 interface:
   display_name: "IssueKit 技术方案"
-  short_description: "为 Issue 设计完整技术方案，涵盖架构、接口、组件和开发步骤。"
-  default_prompt: "使用 $issuekit-design 为当前 Issue 生成技术方案文档。"
+  short_description: "依据真实实现设计技术方案，明确架构取舍、契约、兼容迁移与验证方式。"
+  default_prompt: "使用 $issuekit-design 为当前目标设计技术方案，说明取舍、依赖和验证依据。"

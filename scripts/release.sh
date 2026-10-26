@@ -128,7 +128,7 @@ if [[ "$SKIP_TESTS" -eq 0 ]]; then
   echo "+ python -m pytest"
   # 退出码 5 = 未收集到测试（旧版 pytest 或未开 suppress_no_test_exit_code 时仍视为可继续发布）
   set +e
-  python -m pytest
+  PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}" python -m pytest
   pytest_ec=$?
   set -e
   if [[ "$pytest_ec" -ne 0 && "$pytest_ec" -ne 5 ]]; then

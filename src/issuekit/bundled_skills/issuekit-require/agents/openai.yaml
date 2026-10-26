@@ -1,4 +1,4 @@
 interface:
   display_name: "IssueKit 需求分析"
-  short_description: "创建新 Issue，结合代码分析需求完整度，生成需求文档。"
-  default_prompt: "使用 $issuekit-require 分析需求并创建结构化的 Issue 需求文档。"
+  short_description: "结合当前系统事实澄清需求范围、业务规则和验收标准，按需创建 Issue。"
+  default_prompt: "使用 $issuekit-require 澄清当前需求，给出范围、验收标准和关键待决事项。"

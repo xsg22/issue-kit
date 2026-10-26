@@ -1,4 +1,4 @@
 interface:
   display_name: "IssueKit 编码实现"
-  short_description: "按技术方案编码实现，完成后交叉校验代码与文档一致性。"
-  default_prompt: "使用 $issuekit-coding 按技术方案进行编码并校验实现。"
+  short_description: "根据明确目标完成最小完整实现，保全既有能力并提供可追溯的验证证据。"
+  default_prompt: "使用 $issuekit-coding 完成当前目标的实现，并核对契约、既有能力和验证结果。"

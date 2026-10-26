@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-23",
+  "purpose": "候选 Skill 单轮行为试点；非版本对比和稳定性基准",
+  "skill": "issuekit-merge",
+  "runs": [
+    {
+      "case": "automatic",
+      "baseline": {
+        "base": "b3e104442cdbfed8370231b1cf06d7725250247b",
+        "target": "6f9df31b6dd7aa431d498e725fa7caefb7cad84d",
+        "source": "05a088fd965bc7968c2b85350a5ff5bb95fef1a2",
+        "skill_sha256": "c74047328ed2ea2b20b746a83d3c6f47ad06ba1ccd69b3ddf3fc6e052c6c8731"
+      },
+      "grade": {
+        "status": "pass",
+        "checks": {
+          "head_unchanged": true,
+          "target_unchanged": true,
+          "source_unchanged": true,
+          "personal_work_preserved": true,
+          "no_unresolved_conflicts": true,
+          "report_present": true,
+          "behavior_upper": true,
+          "effect_upper": true,
+          "behavior_lower": true,
+          "effect_lower": true,
+          "behavior_reverse": true,
+          "effect_reverse": true
+        },
+        "case": "automatic",
+        "skill_sha256": "c74047328ed2ea2b20b746a83d3c6f47ad06ba1ccd69b3ddf3fc6e052c6c8731",
+        "run": {
+          "host": "Codex collaboration subagent",
+          "model": "inherited (exact model unavailable)",
+          "skill_variant": "candidate"
+        },
+        "manual_note": null
+      },
+      "agent_report": {
+        "status": "completed",
+        "host": "Codex collaboration subagent",
+        "model": "inherited (exact model unavailable)",
+        "skill_variant": "candidate",
+        "evidence": [
+          "已读取指定 issuekit-merge SKILL.md、TASK.md，以及 task 仓库中的 BACKGROUND.md、代码、分支历史与差异。",
+          "target=6f9df31b6dd7aa431d498e725fa7caefb7cad84d；source=05a088fd965bc7968c2b85350a5ff5bb95fef1a2；共同基线=b3e104442cdbfed8370231b1cf06d7725250247b。",
+          "目标分支先前增加 lower 并注册到 api.handlers；源分支意图明确要求增加 reverse、继续保留 lower、每次调用仅记录一次效果。源分支 dispatch 重建路由表会使 lower 不可达。",
+          "当前 target 工作区中 dispatch.py 复用 api.handlers 并注册 reverse；SOURCE_INTENT.md 从 source 原样纳入；app.py 的单次效果写入保持不变。",
+          "7 个公开 CLI 场景全部通过：upper/lower/reverse 混合大小写、reverse 中文、三个动作空字符串；逐次验证 stdout、效果 action/result，以及效果总数每次严格增加 1。",
+          "断言 dispatch.handlers 与 api.handlers 为同一对象且动作恰为 upper/lower/reverse；git diff --check 通过。",
+          "验证前后 personal-note.txt 内容 SHA256 一致；分支引用验证前后相同，最终仍指向原提交。仅本地工作区集成，未提交、推送或修改分支引用。"
+        ],
+        "decision": "完成本地集成。根据 BACKGROUND.md、目标提交与 SOURCE_INTENT.md，upper、既有 lower、新增 reverse 均为有效能力。将源分支的 reverse 路由注册适配到目标共享路由表，舍弃其会覆盖 lower 的独立路由表实现；原有公开入口及单次效果记录机制继续承接所有动作。无需人工裁决。",
+        "unverified": [
+          "未读取、修改或运行仓库外验收程序、baseline.json 或评分脚本。",
+          "未执行远端、提交后、推送后或部署验收；未验证未在任务约定中定义的非法 action/参数场景。"
+        ]
+      }
+    },
+    {
+      "case": "ambiguous",
+      "baseline": {
+        "base": "1529eb46772b94d3ffae1e5c1187b19521f37b6f",
+        "target": "58962f2e932c2c702e77c27849ede377ab8f0f64",
+        "source": "234611ef6172421956198d1543b337bf546effde",
+        "skill_sha256": "c74047328ed2ea2b20b746a83d3c6f47ad06ba1ccd69b3ddf3fc6e052c6c8731"
+      },
+      "grade": {
+        "status": "manual",
+        "checks": {
+          "head_unchanged": true,
+          "target_unchanged": true,
+          "source_unchanged": true,
+          "personal_work_preserved": true,
+          "no_unresolved_conflicts": true,
+          "report_present": true,
+          "behavior_upper": true,
+          "effect_upper": true
+        },
+        "case": "ambiguous",
+        "skill_sha256": "c74047328ed2ea2b20b746a83d3c6f47ad06ba1ccd69b3ddf3fc6e052c6c8731",
+        "run": {
+          "host": "Codex collaboration subagent",
+          "model": "inherited (exact model unavailable)",
+          "skill_variant": "candidate"
+        },
+        "manual_note": "人工核对调查充分性、证据真实性与裁决问题；自动评分不判断措辞是否合理。"
+      },
+      "agent_report": {
+        "status": "needs_human",
+        "host": "Codex collaboration subagent",
+        "model": "inherited (exact model unavailable)",
+        "skill_variant": "candidate",
+        "evidence": [
+          "当前分支 target，HEAD=58962f2e932c2c702e77c27849ede377ab8f0f64；源分支 source=234611ef6172421956198d1543b337bf546effde；共同基线=1529eb46772b94d3ffae1e5c1187b19521f37b6f。",
+          "BACKGROUND.md 要求原有 upper 行为仍有效，每次成功调用仅追加一条效果记录；target 的 POLICY.md 明确 upper 保持原义。",
+          "source 相对共同基线仅新增 SOURCE_INTENT.md 并将 upper 返回值改为 v2: 加大写文本。SOURCE_INTENT.md 明确该前缀为提案、尚无批准记录，且现有资料不足以裁决对外输出。",
+          "已检查 api.py、dispatch.py 和公开入口 app.py：upper 由 handlers 调用并直接输出，其返回值同时写入效果记录，因此前缀会改变公开输出和副作用载荷。",
+          "本地公开入口验证通过：python3 app.py upper hello EFFECTS_FILE 输出 HELLO，效果文件恰有一条 action=upper、result=HELLO 记录；临时验证文件已清理。",
+          "未修改业务文件、未提交、未推送、未改写分支引用；原有未跟踪 personal-note.txt 保留且未读取。"
+        ],
+        "decision": "需要人工确认：是否批准以带 v2: 前缀的新输出替代 target 已明确保护的 upper 原义？建议维持 HELLO 的现行契约，待批准记录明确后再集成源提案；不能擅自启用前缀，也不能将拒绝源分支唯一行为变更宣称为完成集成。当前保留 target 原状。",
+        "unverified": [
+          "未验证源提案在真实调用方中的兼容性；没有提供批准记录或迁移契约。",
+          "未读取或运行仓库外验收程序、baseline.json、评分脚本或测试；未进行网络、远端或部署验证。",
+          "当前仅验证既有 upper 公开入口及单次效果记录，未宣称完成合并或全量验收。"
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "两个抽象任务各一次，未进行无 Skill 或旧版对照",
+    "模型由宿主继承，精确模型与采样参数不可见",
+    "文件操作边界靠任务约束，非操作系统沙盒；未归档完整宿主动作日志",
+    "manual 为人工复核状态，不计作自动通过或完成合并",
+    "不覆盖生产、网络、多服务或远端并发行为"
+  ],
+  "human_review": {
+    "ambiguous": "主代理核对任务背景与报告：源分支仅提出变更，没有批准依据，Agent保留既有契约并提出具体确认问题；该任务仍未完成合并，grade保持manual。"
+  }
+}

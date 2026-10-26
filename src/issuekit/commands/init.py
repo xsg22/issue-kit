@@ -9,7 +9,7 @@ from rich.panel import Panel
 from rich.tree import Tree
 
 from issuekit.agents import AGENT_REGISTRY, get_agent_config
-from issuekit.agent_skills import SKILL_DIRS, install_agent_skills
+from issuekit.agent_skills import SKILL_DIRS, SkillInstallError, install_agent_skills
 from issuekit.templates import copy_templates
 
 console = Console()
@@ -83,6 +83,23 @@ def init(
         )
     )
 
+    # 先检查并安装 Skills，冲突时不重建项目配置。
+    skills_dir = project_path / agent_config.skills_dir
+    skills_dir.mkdir(parents=True, exist_ok=True)
+
+    console.print(f"\n[cyan]安装 {agent_config.name} Skills...[/cyan]")
+    try:
+        install_count = install_agent_skills(
+            skills_dir, include_openai_yaml=agent_config.has_openai_yaml,
+            report=lambda message: console.print(message, markup=False),
+        )
+    except (SkillInstallError, OSError) as exc:
+        console.print(f"[red]错误:[/red] {exc}")
+        for detail in getattr(exc, "details", []):
+            console.print(f"  {detail}", markup=False)
+        raise typer.Exit(1) from exc
+    console.print(f"  {OK} 已安装 {install_count} 个 Skill 到 {agent_config.skills_dir}/")
+
     # 第 1 步：创建 .issuekit/ 目录结构
     console.print(f"\n[cyan]创建 {ISSUEKIT_DIR}/ 目录...[/cyan]")
 
@@ -106,16 +123,6 @@ def init(
     console.print(f"\n[cyan]配置知识库引擎...[/cyan]")
     write_knowledge_config(knowledge_path)
     console.print(f"  {OK} 知识库配置已创建：{ISSUEKIT_DIR}/knowledge/")
-
-    # 第 3 步：安装 Skills
-    skills_dir = project_path / agent_config.skills_dir
-    skills_dir.mkdir(parents=True, exist_ok=True)
-
-    console.print(f"\n[cyan]安装 {agent_config.name} Skills...[/cyan]")
-    install_count = install_agent_skills(
-        skills_dir, include_openai_yaml=agent_config.has_openai_yaml,
-    )
-    console.print(f"  {OK} 已安装 {install_count} 个 Skill 到 {agent_config.skills_dir}/")
 
     # 第 4 步：展示结果
     console.print()
@@ -144,9 +151,8 @@ def init(
 
     console.print(
         f"\n[green]IssueKit 初始化完成！[/green]\n\n"
-        f"下一步：\n"
-        f"  1. [cyan]$issuekit-knowledge[/cyan]  构建项目知识摘要（推荐）\n"
-        f"  2. [cyan]$issuekit-require[/cyan]    创建第一个 Issue\n"
+        "按当前任务选择 Skill，已有上下文充分时可直接开始。\n"
+        "需要补充项目背景时，可按需使用 [cyan]$issuekit-knowledge[/cyan]。\n"
     )
 
 
